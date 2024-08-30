@@ -1,0 +1,46 @@
+name: CMake on a single platform
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: nvidia/cuda:12.3.2-devel-ubuntu22.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: 'recursive'
+
+   - name: Set up Git
+      uses: actions/setup-git@v1
+      with:
+        git-version: '2.30.0' # Specify the version of Git you need
+
+    - name: Install CMake and git
+      run: |
+        apt-get update
+        apt-get install -y cmake
+
+    - name: Initialize and Update Git Submodules
+      run: |
+        cd $GITHUB_WORKSPACE
+        git submodule sync
+        git submodule update --init --recursive
+
+    # Note: The CUDA toolkit is already included in the container image, so we don't need the Jimver/cuda-toolkit action anymore.
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}

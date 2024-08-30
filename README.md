@@ -33,7 +33,7 @@ make debug
 ./build/bin/hello_world
 
 ```
-### Dependencies 
+### Dependencies
 - Cmake
 - Ninja
 - c++=std23 compilier
