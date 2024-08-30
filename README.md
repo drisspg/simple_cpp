@@ -1,4 +1,4 @@
-# Simple CPP
+# Simple Cpp
 
 ![surfing](https://github.com/drisspg/simple_cuda/assets/32754868/4f8d27e2-dcc2-40a3-9aff-a814340878e4)
 
