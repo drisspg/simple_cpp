@@ -20,7 +20,7 @@ add_library(SimpleCppLib STATIC
 target_include_directories(SimpleCppLib PUBLIC src/include)
 
 # Add third_party stuff
-# add_subdirectory(third_party/fmt)
+add_subdirectory(third_party/fmt)
 
 # Set the output directory for the binaries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -34,9 +34,12 @@ foreach(EXAMPLE_SOURCE ${EXAMPLE_SOURCES})
     # Include header utils
     # This is gross but makes clangd work, I am sure is brittle but w.e for now
     target_include_directories(${EXAMPLE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+    
+    # Include fmt headers
+    target_include_directories(${EXAMPLE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third_party/fmt/include)
 
     # Third party links
-    # target_link_libraries(${EXAMPLE_NAME} PRIVATE fmt::fmt)
+    target_link_libraries(${EXAMPLE_NAME} PRIVATE fmt::fmt)
 
     # Link the library to the target
     target_link_libraries(${EXAMPLE_NAME} PRIVATE SimpleCppLib)
